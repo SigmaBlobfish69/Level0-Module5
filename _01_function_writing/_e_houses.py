@@ -1,33 +1,91 @@
 """
 Have the turtle draw a row of houses.
 """
-from tkinter import messagebox, simpledialog, Tk
 import turtle
+import random
 
-if __name__ == '__main__':
-    # TODO)
-    #   1) Move the turtle to the left side of the window near the bottom.
-    turtle = turtle.Turtle()
-    #   2) Draw ONE flat-topped house with height=100 and green grass after it.
-    turtle.left(90)
-    turtle.forward(150)
-    turtle.right(90)
-    turtle.forward(100)
-    #   3) Put the code that drew the house into a function called draw_house
-    #      HINT: Only the code that draws one house should go in this function.
-    #   4) Using the function you just created, draw 10 houses.
-    #      HINT: Use a for loop.
-    #   5) Run the code to make sure it works before proceeding.
-    #   6) Now change the draw_house function to take height as a parameter.
-    #   7) Use random numbers to draw 9 houses of different heights.
-    #   8) Run the code to make sure it works before proceeding.
-    #   9) Make the draw_house function's height input a string and set the
-    #      height of the house based on the following:
-    #         “small”            =  60
-    #         “medium”           =  120
-    #         “large”            =  250
-    #   10) Make two new functions that draw different shaped roofs
-    #      (JUST the roof part): draw_pointy_roof, draw_flat_roof
-    #   11) By calling the correct "roof" function, make large houses have
-    #      flat roofs and all the others have pointy roofs.
-    exit()
+screen = turtle.Screen()
+t = turtle.Turtle()
+t.speed(0)
+
+def draw_pointy_roof(width):
+    t.begin_fill()
+    t.left(45)
+    t.forward(width * 0.707)
+    t.right(90)
+    t.forward(width * 0.707)
+    t.right(135)
+    t.forward(width)
+    t.end_fill()
+    t.setheading(0)
+
+def draw_flat_roof(width):
+    t.begin_fill()
+    t.forward(width)
+    t.right(90)
+    t.forward(10)
+    t.right(90)
+    t.forward(width)
+    t.right(90)
+    t.forward(10)
+    t.end_fill()
+    t.setheading(0)
+
+def draw_house(size_str):
+    if size_str == "small":
+        height = 60
+    elif size_str == "medium":
+        height = 120
+    elif size_str == "large":
+        height = 250
+    else:
+        height = 100
+
+    width = 60
+
+    t.pendown()
+    t.color("black", "lightgrey")
+    t.begin_fill()
+    for _ in range(2):
+        t.forward(width)
+        t.left(90)
+        t.forward(height)
+        t.left(90)
+    t.end_fill()
+
+    t.penup()
+    t.left(90)
+    t.forward(height)
+    t.right(90)
+
+    t.color("black", "brown")
+    t.pendown()
+    if size_str == "large":
+        draw_flat_roof(width)
+    else:
+        draw_pointy_roof(width)
+
+    t.penup()
+    t.setheading(270)
+    t.forward(height)
+    t.setheading(0)
+    t.forward(width)
+
+    t.color("green")
+    t.pensize(5)
+    t.pendown()
+    t.forward(30)
+    t.penup()
+    t.pensize(1)
+    t.color("black")
+    t.forward(10)
+
+t.penup()
+t.goto(-350, -200)
+
+sizes = ["small", "medium", "large"]
+for _ in range(9):
+    random_size = random.choice(sizes)
+    draw_house(random_size)
+
+screen.exitonclick()
